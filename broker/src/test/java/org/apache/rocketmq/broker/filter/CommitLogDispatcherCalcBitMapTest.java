@@ -129,11 +129,10 @@ public class CommitLogDispatcherCalcBitMapTest {
     public void testDispatch() {
         BrokerConfig brokerConfig = new BrokerConfig();
         brokerConfig.setEnableCalcFilterBitMap(true);
-
+        // 消费者过滤器管理器
         ConsumerFilterManager filterManager = ConsumerFilterManagerTest.gen(10, 10);
 
-        CommitLogDispatcherCalcBitMap calcBitMap = new CommitLogDispatcherCalcBitMap(brokerConfig,
-            filterManager);
+        CommitLogDispatcherCalcBitMap calcBitMap = new CommitLogDispatcherCalcBitMap(brokerConfig, filterManager);
 
         for (int i = 0; i < 10; i++) {
             Map<String, String> properties = new HashMap<String, String>(4);

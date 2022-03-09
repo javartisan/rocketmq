@@ -33,6 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsumerFilterManagerTest {
 
+    /**
+     *
+     * @param topicCount topic数量
+     * @param consumerCount 每一个topic consumequeue数量，也就是partition数量
+     * @return
+     */
     public static ConsumerFilterManager gen(int topicCount, int consumerCount) {
         ConsumerFilterManager filterManager = new ConsumerFilterManager();
 
