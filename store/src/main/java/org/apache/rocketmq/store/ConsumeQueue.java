@@ -29,6 +29,9 @@ import org.apache.rocketmq.logging.InternalLoggerFactory;
 import org.apache.rocketmq.store.config.BrokerRole;
 import org.apache.rocketmq.store.config.StorePathConfigHelper;
 
+/**
+ * 对应的是store/consumequeue下面的文件
+ */
 public class ConsumeQueue {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.STORE_LOGGER_NAME);
 
@@ -474,7 +477,7 @@ public class ConsumeQueue {
             }
         }
     }
-
+    // 构建store/consumequeue下面的topic offset消息，通过该offset可以从store/commitlog里面读取消息
     private boolean putMessagePositionInfo(final long offset, final int size, final long tagsCode,
         final long cqOffset) {
 
@@ -482,12 +485,12 @@ public class ConsumeQueue {
             log.warn("Maybe try to build consume queue repeatedly maxPhysicOffset={} phyOffset={}", maxPhysicOffset, offset);
             return true;
         }
-
+        // 暂存缓冲区
         this.byteBufferIndex.flip();
         this.byteBufferIndex.limit(CQ_STORE_UNIT_SIZE);
-        this.byteBufferIndex.putLong(offset);
-        this.byteBufferIndex.putInt(size);
-        this.byteBufferIndex.putLong(tagsCode);
+        this.byteBufferIndex.putLong(offset); //消息的offset
+        this.byteBufferIndex.putInt(size); //消息的大小
+        this.byteBufferIndex.putLong(tagsCode); //消息的tag信息
 
         final long expectLogicOffset = cqOffset * CQ_STORE_UNIT_SIZE;
 

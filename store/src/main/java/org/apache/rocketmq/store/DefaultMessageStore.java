@@ -1636,7 +1636,7 @@ public class DefaultMessageStore implements MessageStore {
             }
         }, 6, TimeUnit.SECONDS);
     }
-
+    // 构建当前topic的consumequeue下面消息offset数据
     class CommitLogDispatcherBuildConsumeQueue implements CommitLogDispatcher {
 
         @Override
@@ -1653,7 +1653,7 @@ public class DefaultMessageStore implements MessageStore {
             }
         }
     }
-
+    // 构建索引的Dispatcher
     class CommitLogDispatcherBuildIndex implements CommitLogDispatcher {
 
         @Override
