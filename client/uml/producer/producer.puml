@@ -39,14 +39,23 @@ note right
 3：根据消息封装SendMessageRequestHeader
 4：根据内部字段MQClientInstance获取MQClientAPIImpl进行消息发送
 end note
+DefaultMQProducerImpl --> MQClientInstance : MQClientInstance拿到MQClientAPIImpl实例
+note right
+MQClientInstance的start方法内部做了几件重要事情(异步线程池执行)：
+1：配置Bootstrap
+2：从NameServer获取TopicRouteInfoF
+3：启动向所有Broker发送心跳任务
 
-DefaultMQProducerImpl --> MQClientAPIImpl : sendMessage方法发送消息
+
+end note
+MQClientInstance --> MQClientAPIImpl : sendMessage方法发送消息
 MQClientAPIImpl --> MQClientAPIImpl : 将消息封装为RemotingCommand数据包
 MQClientAPIImpl --> MQClientAPIImpl : 调用sendMessageSync方法同步发送消息
 MQClientAPIImpl --> NettyRemotingClient : 使用NettyRemotingClient发送消息
 NettyRemotingClient --> NettyRemotingClient : invokeSync方法进行消息发送
 note right
  invokeSync方法内部会调用方法getAndCreateChannel获取Server的Channel
+ 此处也是一个资源按需创建的优化技巧，只有在使用时候创建Channel，并不会无脑创建
 end note
 
 NettyRemotingClient --> DefaultMQProducer : 最后逐层将Response返回给客户端
