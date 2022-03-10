@@ -1,5 +1,6 @@
 @startjson
 ' 内部成员包含的关系
+
 {
   "DefaultMQProducer": {
     "DefaultMQProducerImpl": {
@@ -29,6 +30,11 @@
 
 @startuml
 ' Producer发送消息的流程图
+
+skinparam backgroundColor #EEEBDA
+skinparam handwritten true
+
+
 DefaultMQProducer --> DefaultMQProducerImpl : 内部使用DefaultMQProducerImpl进行消息发送
 DefaultMQProducerImpl -->  DefaultMQProducerImpl : 根据消息选择对应的ConsumeQueue
 
