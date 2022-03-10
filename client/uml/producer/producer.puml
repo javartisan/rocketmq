@@ -1,0 +1,54 @@
+@startjson
+' 内部成员包含的关系
+{
+  "DefaultMQProducer": {
+    "DefaultMQProducerImpl": {
+      "MQClientInstance": {
+        "MQClientAPIImpl": {
+          "RemotingClient(NettyRemotingClient)": {
+            "NettyClientConfig": "",
+            "Bootstrap": "",
+            "EventLoopGroup": "",
+            "ConcurrentMap<String /* addr */, ChannelWrapper>": "",
+            "ChannelEventListener": ""
+          },
+          "ClientRemotingProcessor": "",
+          "NameSrvAddr": ""
+        },
+        "MQAdminImpl": "",
+        "ClientRemotingProcessor": ""
+      }
+    },
+    "Desc": "DefaultMQProducer内部实现封装"
+  },
+  "Desc": "开放给用户的Client"
+}
+
+@endjson
+
+
+@startuml
+' Producer发送消息的流程图
+DefaultMQProducer --> DefaultMQProducerImpl : 内部使用DefaultMQProducerImpl进行消息发送
+DefaultMQProducerImpl -->  DefaultMQProducerImpl : 根据消息选择对应的ConsumeQueue
+
+DefaultMQProducerImpl -->  DefaultMQProducerImpl : 调用内部方法sendKernelImpl处理发送消息
+note right
+1: 根据选择的ConsumeQueue查询BrokerAddr
+2：非Batch消息生成UniqueId
+3：根据消息封装SendMessageRequestHeader
+4：根据内部字段MQClientInstance获取MQClientAPIImpl进行消息发送
+end note
+
+DefaultMQProducerImpl --> MQClientAPIImpl : sendMessage方法发送消息
+MQClientAPIImpl --> MQClientAPIImpl : 将消息封装为RemotingCommand数据包
+MQClientAPIImpl --> MQClientAPIImpl : 调用sendMessageSync方法同步发送消息
+MQClientAPIImpl --> NettyRemotingClient : 使用NettyRemotingClient发送消息
+NettyRemotingClient --> NettyRemotingClient : invokeSync方法进行消息发送
+note right
+ invokeSync方法内部会调用方法getAndCreateChannel获取Server的Channel
+end note
+
+NettyRemotingClient --> DefaultMQProducer : 最后逐层将Response返回给客户端
+
+@enduml

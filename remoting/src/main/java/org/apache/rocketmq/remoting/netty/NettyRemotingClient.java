@@ -148,6 +148,10 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
         return Math.abs(r.nextInt() % 999) % 999;
     }
 
+    /**
+     * 这里不不会真实创建TCP连接而是在真正使用时候才开创建，此处主要是初始化Netty的Bootstrap配置；
+     * 创建Channel实现参见：{@link NettyRemotingClient#createChannel(java.lang.String)}
+     */
     @Override
     public void start() {
         this.defaultEventExecutorGroup = new DefaultEventExecutorGroup(
@@ -387,7 +391,7 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
                 if (timeoutMillis < costTime) {
                     throw new RemotingTimeoutException("invokeSync call the addr[" + addr + "] timeout");
                 }
-                RemotingCommand response = this.invokeSyncImpl(channel, request, timeoutMillis - costTime);
+                RemotingCommand response = this.invokeSyncImpl(channel, request, timeoutMillis - costTime); // 解析响应信息
                 doAfterRpcHooks(RemotingHelper.parseChannelRemoteAddr(channel), request, response);
                 return response;
             } catch (RemotingSendRequestException e) {
@@ -466,7 +470,7 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
 
         return null;
     }
-
+    //创建Channel，按需创建
     private Channel createChannel(final String addr) throws InterruptedException {
         ChannelWrapper cw = this.channelTables.get(addr);
         if (cw != null && cw.isOK()) {
@@ -492,7 +496,7 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
                 }
 
                 if (createNewConnection) {
-                    ChannelFuture channelFuture = this.bootstrap.connect(RemotingHelper.string2SocketAddress(addr));
+                    ChannelFuture channelFuture = this.bootstrap.connect(RemotingHelper.string2SocketAddress(addr)); // 创建连接
                     log.info("createChannel: begin to connect remote host[{}] asynchronously", addr);
                     cw = new ChannelWrapper(channelFuture);
                     this.channelTables.put(addr, cw);

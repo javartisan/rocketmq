@@ -511,7 +511,7 @@ public class MQClientAPIImpl {
         final long timeoutMillis,
         final RemotingCommand request
     ) throws RemotingException, MQBrokerException, InterruptedException {
-        RemotingCommand response = this.remotingClient.invokeSync(addr, request, timeoutMillis);
+        RemotingCommand response = this.remotingClient.invokeSync(addr, request, timeoutMillis); // 真正发送消息
         assert response != null;
         return this.processSendResponse(brokerName, msg, response, addr);
     }

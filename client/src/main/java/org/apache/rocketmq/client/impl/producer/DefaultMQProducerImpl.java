@@ -93,12 +93,15 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.apache.rocketmq.remoting.exception.RemotingTimeoutException;
 import org.apache.rocketmq.remoting.exception.RemotingTooMuchRequestException;
 
+/**
+ * 承载了发送消息的绝大部分工作，例如ConsumeQueue的选择
+ */
 public class DefaultMQProducerImpl implements MQProducerInner {
     private final InternalLogger log = ClientLogger.getLog();
     private final Random random = new Random();
     private final DefaultMQProducer defaultMQProducer;
     private final ConcurrentMap<String/* topic */, TopicPublishInfo> topicPublishInfoTable =
-        new ConcurrentHashMap<String, TopicPublishInfo>();
+        new ConcurrentHashMap<String, TopicPublishInfo>(); //维护了Topic与ConsumeQueue之间的关系
     private final ArrayList<SendMessageHook> sendMessageHookList = new ArrayList<SendMessageHook>();
     private final ArrayList<EndTransactionHook> endTransactionHookList = new ArrayList<EndTransactionHook>();
     private final RPCHook rpcHook;
@@ -520,7 +523,7 @@ public class DefaultMQProducerImpl implements MQProducerInner {
         }
 
     }
-
+    //选择消息对应的MessageQueue，也就是所谓的分区
     public MessageQueue selectOneMessageQueue(final TopicPublishInfo tpInfo, final String lastBrokerName) {
         return this.mqFaultStrategy.selectOneMessageQueue(tpInfo, lastBrokerName);
     }
@@ -714,7 +717,7 @@ public class DefaultMQProducerImpl implements MQProducerInner {
             try {
                 //for MessageBatch,ID has been set in the generating process
                 if (!(msg instanceof MessageBatch)) {
-                    MessageClientIDSetter.setUniqID(msg);
+                    MessageClientIDSetter.setUniqID(msg); //非批次消息生成唯一ID
                 }
 
                 boolean topicWithNamespace = false;
@@ -841,7 +844,7 @@ public class DefaultMQProducerImpl implements MQProducerInner {
                         if (timeout < costTimeSync) {
                             throw new RemotingTooMuchRequestException("sendKernelImpl call timeout");
                         }
-                        sendResult = this.mQClientFactory.getMQClientAPIImpl().sendMessage(
+                        sendResult = this.mQClientFactory.getMQClientAPIImpl().sendMessage( // 通过MQClientAPI发送消息
                             brokerAddr,
                             mq.getBrokerName(),
                             msg,
