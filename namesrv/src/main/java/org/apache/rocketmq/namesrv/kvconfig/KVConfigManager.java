@@ -28,6 +28,10 @@ import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.logging.InternalLoggerFactory;
 import org.apache.rocketmq.common.protocol.body.KVTable;
 import org.apache.rocketmq.namesrv.NamesrvController;
+
+/**
+ * NameServer的KV存储管理器，持久化到文件
+ */
 public class KVConfigManager {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.NAMESRV_LOGGER_NAME);
 
@@ -87,6 +91,7 @@ public class KVConfigManager {
         this.persist();
     }
 
+    // 持久化配置文件
     public void persist() {
         try {
             this.lock.readLock().lockInterruptibly();
