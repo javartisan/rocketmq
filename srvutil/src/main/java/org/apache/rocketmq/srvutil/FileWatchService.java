@@ -33,6 +33,9 @@ import org.apache.rocketmq.common.constant.LoggerName;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.logging.InternalLoggerFactory;
 
+/**
+ * 文件监测服务用于检查文件变化，有变化之后通过Listener进行响应
+ */
 public class FileWatchService extends ServiceThread {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.COMMON_LOGGER_NAME);
 
@@ -79,7 +82,7 @@ public class FileWatchService extends ServiceThread {
                     }
                     if (!newHash.equals(fileCurrentHash.get(i))) {
                         fileCurrentHash.set(i, newHash);
-                        listener.onChanged(watchFiles.get(i));
+                        listener.onChanged(watchFiles.get(i)); //监测到文件变化，触发Listener
                     }
                 }
             } catch (Exception e) {

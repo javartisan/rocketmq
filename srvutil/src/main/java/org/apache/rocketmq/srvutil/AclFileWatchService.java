@@ -33,6 +33,9 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  FileWatchService工程类似，只是监测的文件不一样而已
+ */
 public class AclFileWatchService extends ServiceThread {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.COMMON_LOGGER_NAME);
 
