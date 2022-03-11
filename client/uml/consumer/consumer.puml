@@ -1,11 +1,42 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-autonumber
+skinparam backgroundColor #EEEBDA
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+interface MQConsumer
+note left : Consumer的基类接口，具体实现有两个子实现，\n分别是Pull与Push模式
+interface MQPushConsumer
+interface MQPullConsumer
+
+class DefaultMQPullConsumer
+class DefaultMQPushConsumer
+
+
+
+'  <|--继承或者接口实现
+MQConsumer <|-- MQPushConsumer
+MQConsumer <|-- MQPullConsumer
+
+MQPushConsumer <|-- DefaultMQPushConsumer
+MQPullConsumer <|-- DefaultMQPullConsumer : 实现已经过时，使用DefaultLitePullConsumer代替
+
+' ----------------------------------------
+
+interface LitePullConsumer
+class DefaultLitePullConsumer
+
+LitePullConsumer <|-- DefaultLitePullConsumer :  新赠送的Consumer接口优化了老版本的\nDefaultMQPullConsumer性能
+
 @enduml
+
+
+
+@startjson
+{
+"Consumer":""
+}
+
+@endjson
+
+
