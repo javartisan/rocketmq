@@ -39,6 +39,9 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
  * Default pulling consumer.
  * This class will be removed in 2022, and a better implementation {@link DefaultLitePullConsumer} is recommend to use
  * in the scenario of actively pulling messages.
+ * <p>
+ * DefaultMQPullConsumer实现跟生产者很像，都是在DefaultMQPullConsumer内部封装了一个DefaultMQPullConsumerImpl
+ * 字段，将所有功能集成到DefaultMQPullConsumerImpl中
  */
 @Deprecated
 public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsumer {
@@ -294,7 +297,7 @@ public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsume
     @Override
     public void start() throws MQClientException {
         this.setConsumerGroup(NamespaceUtil.wrapNamespace(this.getNamespace(), this.consumerGroup));
-        this.defaultMQPullConsumerImpl.start();
+        this.defaultMQPullConsumerImpl.start(); // 启动DefaultMQPullConsumerImpl实例
     }
 
     @Override
