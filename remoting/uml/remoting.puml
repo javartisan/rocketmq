@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+interface RemotingService
+
+interface RemotingServer
+interface RemotingClient
+
+class NettyRemotingServer
+
+class NettyRemotingClient
+
+RemotingService <|-- RemotingServer
+RemotingService <|-- RemotingClient
+
+RemotingServer <|-- NettyRemotingServer
+NettyRemotingServer : ServerBootstrap
+NettyRemotingServer : EventLoopGroup
+NettyRemotingServer : NettyServerConfig
+NettyRemotingServer : ChannelEventListener
+NettyRemotingServer : DefaultEventExecutorGroup
+NettyRemotingServer : HandshakeHandler
+NettyRemotingServer : NettyEncoder
+NettyRemotingServer : NettyConnectManageHandler
+NettyRemotingServer : NettyServerHandler : ChannelHanler处理Request
+
+
+RemotingClient <|-- NettyRemotingClient
+NettyRemotingClient : NettyClientConfig
+NettyRemotingClient : Bootstrap
+NettyRemotingClient : EventLoopGroup
+NettyRemotingClient : ChannelTables
+NettyRemotingClient : NamesrvAddrList
+NettyRemotingClient : ChannelEventListener
+NettyRemotingClient : DefaultEventExecutorGroup
+
+
+
+@enduml
