@@ -465,7 +465,7 @@ public class BrokerController {
                             TlsSystemConfig.tlsServerKeyPath,
                             TlsSystemConfig.tlsServerTrustCertPath
                         },
-                        new FileWatchService.Listener() {
+                        new FileWatchService.Listener() { // 事件监测tls文件变化，实时响应配置变化
                             boolean certChanged, keyChanged = false;
 
                             @Override
