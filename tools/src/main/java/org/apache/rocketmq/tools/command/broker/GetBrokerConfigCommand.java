@@ -64,7 +64,7 @@ public class GetBrokerConfigCommand implements SubCommand {
     @Override
     public void execute(final CommandLine commandLine, final Options options,
         final RPCHook rpcHook) throws SubCommandException {
-        DefaultMQAdminExt defaultMQAdminExt = new DefaultMQAdminExt(rpcHook);
+        DefaultMQAdminExt defaultMQAdminExt = new DefaultMQAdminExt(rpcHook); // 内部负责初始化网络配置等工作
 
         defaultMQAdminExt.setInstanceName(Long.toString(System.currentTimeMillis()));
 

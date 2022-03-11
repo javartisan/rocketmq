@@ -60,7 +60,7 @@ import org.apache.rocketmq.remoting.exception.RemotingTimeoutException;
 import org.apache.rocketmq.tools.admin.api.MessageTrack;
 
 public class DefaultMQAdminExt extends ClientConfig implements MQAdminExt {
-    private final DefaultMQAdminExtImpl defaultMQAdminExtImpl;
+    private final DefaultMQAdminExtImpl defaultMQAdminExtImpl; // 网络通信客户端
     private String adminExtGroup = "admin_ext_group";
     private String createTopicKey = TopicValidator.AUTO_CREATE_TOPIC_KEY_TOPIC;
     private long timeoutMillis = 5000;
