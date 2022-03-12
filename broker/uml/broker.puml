@@ -64,7 +64,7 @@ note left
 8： this.filterServerManager.start();
 9： startProcessorByHa(messageStoreConfig.getBrokerRole());
 10：handleSlaveSynchronize(messageStoreConfig.getBrokerRole());
-11：this.registerBrokerAll(true, false,
+11：this.registerBrokerAll(true, false, true); 比较重要的方法：会注册Broker到NameSvr
 12：定时任务执行 BrokerController.this.registerBrokerAll(true, false, brokerConfig.isForceRegister());
 13：this.brokerStatsManager.start();
 14：this.brokerFastFailure.start();

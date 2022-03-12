@@ -880,11 +880,11 @@ public class BrokerController {
         }
 
         if (this.remotingServer != null) {
-            this.remotingServer.start();
+            this.remotingServer.start(); //启动nettyServer
         }
 
         if (this.fastRemotingServer != null) {
-            this.fastRemotingServer.start();
+            this.fastRemotingServer.start(); //启动nettyServer
         }
 
         if (this.fileWatchService != null) {
@@ -892,7 +892,7 @@ public class BrokerController {
         }
 
         if (this.brokerOuterAPI != null) {
-            this.brokerOuterAPI.start();
+            this.brokerOuterAPI.start(); //broker对外通信的客户端
         }
 
         if (this.pullRequestHoldService != null) {
@@ -910,7 +910,7 @@ public class BrokerController {
         if (!messageStoreConfig.isEnableDLegerCommitLog()) {
             startProcessorByHa(messageStoreConfig.getBrokerRole());
             handleSlaveSynchronize(messageStoreConfig.getBrokerRole());
-            this.registerBrokerAll(true, false, true);
+            this.registerBrokerAll(true, false, true); // 注册Broker到NameSvr
         }
 
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
@@ -977,7 +977,7 @@ public class BrokerController {
             doRegisterBrokerAll(checkOrderConfig, oneway, topicConfigWrapper);
         }
     }
-
+    // 注册Broker
     private void doRegisterBrokerAll(boolean checkOrderConfig, boolean oneway,
         TopicConfigSerializeWrapper topicConfigWrapper) {
         List<RegisterBrokerResult> registerBrokerResultList = this.brokerOuterAPI.registerBrokerAll(

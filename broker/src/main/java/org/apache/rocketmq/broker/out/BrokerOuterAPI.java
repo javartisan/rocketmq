@@ -57,6 +57,9 @@ import org.apache.rocketmq.remoting.netty.NettyClientConfig;
 import org.apache.rocketmq.remoting.netty.NettyRemotingClient;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 
+/**
+ * 主要负责Broker对外通信的客户端，例如注册Broker到Namesvr
+ */
 public class BrokerOuterAPI {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.BROKER_LOGGER_NAME);
     private final RemotingClient remotingClient;
@@ -145,7 +148,7 @@ public class BrokerOuterAPI {
                 brokerOuterExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        try {
+                        try { // 注册Broker到Master
                             RegisterBrokerResult result = registerBroker(namesrvAddr, oneway, timeoutMills, requestHeader, body);
                             if (result != null) {
                                 registerBrokerResultList.add(result);
@@ -189,7 +192,7 @@ public class BrokerOuterAPI {
             }
             return null;
         }
-
+        // 注册Broker到namesrvAddr
         RemotingCommand response = this.remotingClient.invokeSync(namesrvAddr, request, timeoutMills);
         assert response != null;
         switch (response.getCode()) {
