@@ -34,7 +34,7 @@ note right
 end note
 
 MessageStore -> BrokerController :继续执行initialize方法
-note  right
+note  left
 1: 创建NettyRemotingServer；分别remotingServer（10911端口监听）与fastRemotingServer(10909端口监听)，他们主要区别是在注册Processor：
     remotingServer注册了pullMessageProcessor，this.remotingServer.registerProcessor(RequestCode.PULL_MESSAGE, this.pullMessageProcessor, this.pullMessageExecutor);
     fastRemotingServer没有注册pullMessageProcessor，因此fastRemotingServer不处理客户端Consumer的请求
@@ -53,7 +53,7 @@ end note
 
 
 BrokerStartup -> BrokerController : start方法启动brokerController
-note left
+note right
 1： this.messageStore.start();
 2： this.remotingServer.start();
 3： this.fastRemotingServer.start();
