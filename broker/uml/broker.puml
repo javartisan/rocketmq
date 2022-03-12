@@ -35,7 +35,9 @@ end note
 
 MessageStore -> BrokerController :继续执行initialize方法
 note  right
-1: 创建NettyRemotingServer（remotingServer与fastRemotingServer）
+1: 创建NettyRemotingServer；分别remotingServer（10911端口监听）与fastRemotingServer(10909端口监听)，他们主要区别是在注册Processor：
+    remotingServer注册了pullMessageProcessor，this.remotingServer.registerProcessor(RequestCode.PULL_MESSAGE, this.pullMessageProcessor, this.pullMessageExecutor);
+    fastRemotingServer没有注册pullMessageProcessor，因此fastRemotingServer不处理客户端Consumer的请求
 2：初始化一系列线程池，例如心跳等线程池
 3：调用registerProcessor将步骤2里面的线程池注册到remotingServer与fastRemotingServer中，之外还注册一系列的NettyRequestProcessor用于处理请求
 4：最后会启动定时任务，例如定时任务执行：consumerOffsetManager.persist()与consumerFilterManager.persist()例如心跳等线程池
