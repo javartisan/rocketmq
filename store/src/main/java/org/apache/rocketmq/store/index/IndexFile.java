@@ -29,7 +29,11 @@ import org.apache.rocketmq.store.MappedFile;
 /**
  * 构建store/index下面的索引文件下面的文件，也就是所谓的索引文件,主要用于Message Key的查询。数据结构参见：
  * https://www.cnblogs.com/leodaxin/p/15982502.html
-  */
+ *
+ * ------------------------------------------------------------------------------------------
+ * |hash(messageKey) | offset   |timestamp | lastDataUnitOffsetInIndexFile (Hash表里面的Link) |
+ * ------------------------------------------------------------------------------------------
+ */
 public class IndexFile {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.STORE_LOGGER_NAME);
     private static int hashSlotSize = 4;
