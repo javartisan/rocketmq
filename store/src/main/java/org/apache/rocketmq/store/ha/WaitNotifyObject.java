@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * 就是Java Object Wait Notify的一个封装工具类
+ */
 public class WaitNotifyObject {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.STORE_LOGGER_NAME);
 
@@ -61,7 +64,7 @@ public class WaitNotifyObject {
             }
         }
     }
-
+    // 类似于回调函数，当等待结束需要做什么
     protected void onWaitEnd() {
     }
 
