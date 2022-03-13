@@ -30,7 +30,10 @@ import org.apache.rocketmq.store.config.BrokerRole;
 import org.apache.rocketmq.store.config.StorePathConfigHelper;
 
 /**
- * 对应的是store/consumequeue下面的文件
+ * 对应的是store/consumequeue下面的文件,每个数据单元20个字节，8+4+8，具体格式：
+ * ------------------------------------------------
+ * |8 offset in commit log | 4 size | 8 hash tag  |
+ * ------------------------------------------------
  */
 public class ConsumeQueue {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.STORE_LOGGER_NAME);
