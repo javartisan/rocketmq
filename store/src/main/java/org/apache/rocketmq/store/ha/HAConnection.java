@@ -29,6 +29,9 @@ import org.apache.rocketmq.remoting.common.RemotingUtil;
 import org.apache.rocketmq.remoting.netty.NettySystemConfig;
 import org.apache.rocketmq.store.SelectMappedBufferResult;
 
+/**
+ * 内部有ReadSocketService与WriteSocketService实例负责HA Channel的读写请求处理
+ */
 public class HAConnection {
     private static final InternalLogger log = InternalLoggerFactory.getLogger(LoggerName.STORE_LOGGER_NAME);
     private final HAService haService;
@@ -40,6 +43,12 @@ public class HAConnection {
     private volatile long slaveRequestOffset = -1;
     private volatile long slaveAckOffset = -1;
 
+    /**
+     *
+     * @param haService
+     * @param socketChannel 连接的java nio channel
+     * @throws IOException
+     */
     public HAConnection(final HAService haService, final SocketChannel socketChannel) throws IOException {
         this.haService = haService;
         this.socketChannel = socketChannel;
@@ -83,6 +92,9 @@ public class HAConnection {
         return socketChannel;
     }
 
+    /**
+     * Ha Channel Read Thread
+     */
     class ReadSocketService extends ServiceThread {
         private static final int READ_MAX_BUFFER_SIZE = 1024 * 1024;
         private final Selector selector;
@@ -201,6 +213,9 @@ public class HAConnection {
         }
     }
 
+    /**
+     * Ha Channel Write Thread
+     */
     class WriteSocketService extends ServiceThread {
         private final Selector selector;
         private final SocketChannel socketChannel;

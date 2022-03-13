@@ -57,6 +57,11 @@ public class RemotingUtil {
         return isWindowsPlatform;
     }
 
+    /**
+     * 优先使用Linux Epoll
+     * @return
+     * @throws IOException
+     */
     public static Selector openSelector() throws IOException {
         Selector result = null;
 

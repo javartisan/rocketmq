@@ -1,0 +1,13 @@
+@startuml
+'HA服务没有使用Netty而是使用的原生Java nio原因：避免了反复的繁杂的编码解码以及线程上线文切换代价
+
+class HAConnection
+class ReadSocketService
+class WriteSocketService
+
+class HAService
+class AcceptSocketService
+class GroupTransferService
+class HAClient
+
+@enduml
