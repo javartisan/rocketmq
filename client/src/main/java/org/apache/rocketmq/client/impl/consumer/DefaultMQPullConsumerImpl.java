@@ -79,9 +79,11 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
     private final ArrayList<ConsumeMessageHook> consumeMessageHookList = new ArrayList<ConsumeMessageHook>();
     private final ArrayList<FilterMessageHook> filterMessageHookList = new ArrayList<FilterMessageHook>();
     private volatile ServiceState serviceState = ServiceState.CREATE_JUST;
+    // DefaultMQPullConsumerImpl实例化之后会将资深注册到MQClientInstance便于后续进行负载均衡
     protected MQClientInstance mQClientFactory;
     private PullAPIWrapper pullAPIWrapper;
     private OffsetStore offsetStore;
+    // 负载均衡器
     private RebalanceImpl rebalanceImpl = new RebalancePullImpl(this);
 
     public DefaultMQPullConsumerImpl(final DefaultMQPullConsumer defaultMQPullConsumer, final RPCHook rpcHook) {
@@ -375,7 +377,7 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
 
         return result;
     }
-
+    // consumer对ConsumerQueue做负载均衡
     @Override
     public void doRebalance() {
         if (this.rebalanceImpl != null) {
@@ -661,7 +663,7 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
                 }
 
                 this.offsetStore.load();
-
+                // 将当前Consumer注册到mQClientFactory中
                 boolean registerOK = mQClientFactory.registerConsumer(this.defaultMQPullConsumer.getConsumerGroup(), this);
                 if (!registerOK) {
                     this.serviceState = ServiceState.CREATE_JUST;

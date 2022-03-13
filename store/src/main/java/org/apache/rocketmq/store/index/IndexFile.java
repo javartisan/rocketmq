@@ -27,7 +27,7 @@ import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.logging.InternalLoggerFactory;
 import org.apache.rocketmq.store.MappedFile;
 /**
- * 构建store/index下面的索引文件下面的文件，也就是所谓的索引文件。数据结构参见：
+ * 构建store/index下面的索引文件下面的文件，也就是所谓的索引文件,主要用于Message Key的查询。数据结构参见：
  * https://www.cnblogs.com/leodaxin/p/15982502.html
   */
 public class IndexFile {
