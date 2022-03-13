@@ -19,6 +19,9 @@ package org.apache.rocketmq.common.filter;
 
 import org.apache.rocketmq.common.message.MessageExt;
 
+/**
+ * 对于按照Tag订阅的消费请求会将Tag过滤逻辑封装为MessageFilter实例进行消息筛选
+ */
 public interface MessageFilter {
     boolean match(final MessageExt msg, final FilterContext context);
 }

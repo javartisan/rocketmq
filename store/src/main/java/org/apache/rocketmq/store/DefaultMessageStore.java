@@ -1990,7 +1990,7 @@ public class DefaultMessageStore implements MessageStore {
             return 1000 * 60;
         }
     }
-
+    // ReputMessageService不停地分发请求并异步构建ConsumeQueue（逻辑消费队列）和IndexFile（索引文件）数据
     class ReputMessageService extends ServiceThread {
 
         private volatile long reputFromOffset = 0;

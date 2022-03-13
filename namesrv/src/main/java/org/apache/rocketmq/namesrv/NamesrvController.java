@@ -55,7 +55,7 @@ public class NamesrvController {
 
     private BrokerHousekeepingService brokerHousekeepingService;
 
-    private ExecutorService remotingExecutor;
+    private ExecutorService remotingExecutor; // remoteCommand process thread pool
 
     private Configuration configuration;
     private FileWatchService fileWatchService;
